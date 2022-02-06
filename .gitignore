@@ -1,0 +1,8 @@
+filter
+filter.tab.o
+lex.yy.o
+filter.tab.c
+lex.yy.c
+filter.tab.h
+filter.output
+core.*
