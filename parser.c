@@ -2,21 +2,22 @@
 #include <stdlib.h>
 
 #include "ast.h"
+#include "parser.h"
 #include "filter.tab.h"
-
-typedef struct yy_buffer_state *YY_BUFFER_STATE;
-extern int yyparse();
-extern YY_BUFFER_STATE yy_scan_string(char *str);
-extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
+#include "filter.yy.h"
 
 struct Value *val;
 
-void dfs(struct Value *v)
+void dfs(struct Value *v, int level)
 {
-	//printf("v is %p\n", (void*)v);
-	if(v == NULL) return;
+	if (v == NULL)
+		return;
+	printf("Level is %d.", level);
 	switch (v->type_)
 	{
+	case NONE:
+		printf("None \n");
+		break;
 	case AND:
 		printf("AND \n");
 		break;
@@ -54,22 +55,18 @@ void dfs(struct Value *v)
 		printf("FLOAT_PARAM %f\n", *((float *)v->data_));
 		break;
 	}
-	if(v->child_num_ == 0) return;
-	for(int i = 0; i < v->child_num_; ++i)
+	if (v->child_num_ == 0)
+		return;
+	for (int i = 0; i < v->child_num_; ++i)
 	{
-		dfs(v->child_[i]);
+		dfs(v->child_[i], level + 1);
 	}
 }
 
-int main()
+struct Value *parse(char *str, int len)
 {
-	char string[] = "and(equals(toYear(LO_ORDERDATE), 1993), and(greaterOrEquals(LO_DISCOUNT, 1), "
-					"lessOrEquals(LO_DISCOUNT, 3.1), less(LO_QUANTITY, 25)))";
-	YY_BUFFER_STATE buffer = yy_scan_string(string);
+	struct yy_buffer_state * buffer = yy_scan_string(str);
 	yyparse();
 	yy_delete_buffer(buffer);
-	printf("-----------------------\n");
-	printf("%s\n", string);
-	dfs(val);
-	return 0;
+	return val;
 }

@@ -7,6 +7,8 @@
 
 enum ValueType
 {
+    NONE,
+    /*Logic*/
     AND,
     OR,
     /*compare*/

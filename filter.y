@@ -6,8 +6,6 @@
 #include "ast.h"
 #include "debug.h"
 
-int yydebug=0;
-
 extern int yylex();
 extern struct Value* val;
 
@@ -66,22 +64,28 @@ logic : T_AND T_LEFT_BRACKET hyper T_RIGHT_BRACKET
        }
        ;
 
-
-hyper : judge T_COMMA hyper
+/*这里的过程类似于DFS到底，然后返回的场景。*/
+hyper : hyper T_COMMA judge
       {
-            append_child($$, $3);
+            append_child($1, $3);
+            $$ = $1;
       }
-      | logic T_COMMA hyper
+      | hyper T_COMMA logic
       {
-            append_child($$, $3);
+            append_child($1, $3);
+            $$ = $1;
       }
       | judge
       {
-            $$ = $1;
+            struct Value* p = new_value(NONE);
+            append_child(p, $1);
+            $$ = p;
       }
       | logic
       {
-            $$ = $1;
+            struct Value* p = new_value(NONE);
+            append_child(p, $1);
+            $$ = p;
       }
 
 
