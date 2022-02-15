@@ -51,14 +51,18 @@ filter : logic
 logic : T_AND T_LEFT_BRACKET hyper T_RIGHT_BRACKET
        {
             struct Value* p = new_value(AND);
-            append_child(p, $3);
+            p->child_num_ = $3->child_num_;
+            p->child_ = $3->child_;
+            free($3);
             $$ = p;
             INFO("and filter \n");
        }
        | T_OR T_LEFT_BRACKET hyper T_RIGHT_BRACKET
        {
             struct Value* p = new_value(OR);
-            append_child(p, $3);
+            p->child_num_ = $3->child_num_;
+            p->child_ = $3->child_;
+            free($3);
             $$ = p;
             INFO("or filter \n");
        }
