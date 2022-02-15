@@ -50,6 +50,7 @@ struct Value *new_string_value(char *str, int len)
 
 void delete_value(struct Value *val)
 {
+    for(int i = 0; i < val->child_num_; ++i) delete_value(val->child_[i]);
     if (val->type_ == INT_PARAM || val->type_ == FLOAT_PARAM || val->type_ == STR_PARAM)
         free(val->data_);
     free(val);
