@@ -9,3 +9,5 @@ filter.yy.h
 
 core.*
 *.o
+
+.vscode
