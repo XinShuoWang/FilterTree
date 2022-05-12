@@ -10,4 +10,4 @@ filter: main.cc filter.tab.c filter.yy.c ast.c parser.c FilterTree.cc
 	$(CC) -g -std=c++11 -o filter $^
 
 clean:
-	rm filter *.o core.* filter.output filter.tab.c filter.tab.h filter.yy.c filter.yy.h
+	rm filter *.o core.*

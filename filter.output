@@ -1,0 +1,624 @@
+Terminals unused in grammar
+
+    T_COLON
+
+
+Grammar
+
+    0 $accept: filter $end
+
+    1 filter: logic
+
+    2 logic: T_AND T_LEFT_BRACKET hyper T_RIGHT_BRACKET
+    3      | T_OR T_LEFT_BRACKET hyper T_RIGHT_BRACKET
+
+    4 hyper: hyper T_COMMA judge
+    5      | hyper T_COMMA logic
+    6      | judge
+    7      | logic
+
+    8 judge: T_LESS T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+    9      | T_LESS_OR_EQUAL T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+   10      | T_EQUAL T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+   11      | T_NOT_EQUAL T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+   12      | T_GREATER T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+   13      | T_GREATER_OR_EQUAL T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+
+   14 func: T_TO_YEAR T_LEFT_BRACKET param T_RIGHT_BRACKET
+   15     | param
+
+   16 param: T_INT
+   17      | T_FLOAT
+   18      | T_PARAMETER
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    error (256)
+    T_INT <ival> (258) 16
+    T_FLOAT <fval> (259) 17
+    T_PARAMETER <sval> (260) 18
+    T_LEFT_BRACKET (261) 2 3 8 9 10 11 12 13 14
+    T_RIGHT_BRACKET (262) 2 3 8 9 10 11 12 13 14
+    T_COMMA (263) 4 5 8 9 10 11 12 13
+    T_COLON (264)
+    T_AND (265) 2
+    T_OR (266) 3
+    T_LESS (267) 8
+    T_LESS_OR_EQUAL (268) 9
+    T_EQUAL (269) 10
+    T_NOT_EQUAL (270) 11
+    T_GREATER (271) 12
+    T_GREATER_OR_EQUAL (272) 13
+    T_TO_YEAR (273) 14
+
+
+Nonterminals, with rules where they appear
+
+    $accept (19)
+        on left: 0
+    filter <val> (20)
+        on left: 1
+        on right: 0
+    logic <val> (21)
+        on left: 2 3
+        on right: 1 5 7
+    hyper <val> (22)
+        on left: 4 5 6 7
+        on right: 2 3 4 5
+    judge <val> (23)
+        on left: 8 9 10 11 12 13
+        on right: 4 6
+    func <val> (24)
+        on left: 14 15
+        on right: 8 9 10 11 12 13
+    param <val> (25)
+        on left: 16 17 18
+        on right: 14 15
+
+
+State 0
+
+    0 $accept: . filter $end
+
+    T_AND  shift, and go to state 1
+    T_OR   shift, and go to state 2
+
+    filter  go to state 3
+    logic   go to state 4
+
+
+State 1
+
+    2 logic: T_AND . T_LEFT_BRACKET hyper T_RIGHT_BRACKET
+
+    T_LEFT_BRACKET  shift, and go to state 5
+
+
+State 2
+
+    3 logic: T_OR . T_LEFT_BRACKET hyper T_RIGHT_BRACKET
+
+    T_LEFT_BRACKET  shift, and go to state 6
+
+
+State 3
+
+    0 $accept: filter . $end
+
+    $end  shift, and go to state 7
+
+
+State 4
+
+    1 filter: logic .
+
+    $default  reduce using rule 1 (filter)
+
+
+State 5
+
+    2 logic: T_AND T_LEFT_BRACKET . hyper T_RIGHT_BRACKET
+
+    T_AND               shift, and go to state 1
+    T_OR                shift, and go to state 2
+    T_LESS              shift, and go to state 8
+    T_LESS_OR_EQUAL     shift, and go to state 9
+    T_EQUAL             shift, and go to state 10
+    T_NOT_EQUAL         shift, and go to state 11
+    T_GREATER           shift, and go to state 12
+    T_GREATER_OR_EQUAL  shift, and go to state 13
+
+    logic  go to state 14
+    hyper  go to state 15
+    judge  go to state 16
+
+
+State 6
+
+    3 logic: T_OR T_LEFT_BRACKET . hyper T_RIGHT_BRACKET
+
+    T_AND               shift, and go to state 1
+    T_OR                shift, and go to state 2
+    T_LESS              shift, and go to state 8
+    T_LESS_OR_EQUAL     shift, and go to state 9
+    T_EQUAL             shift, and go to state 10
+    T_NOT_EQUAL         shift, and go to state 11
+    T_GREATER           shift, and go to state 12
+    T_GREATER_OR_EQUAL  shift, and go to state 13
+
+    logic  go to state 14
+    hyper  go to state 17
+    judge  go to state 16
+
+
+State 7
+
+    0 $accept: filter $end .
+
+    $default  accept
+
+
+State 8
+
+    8 judge: T_LESS . T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+
+    T_LEFT_BRACKET  shift, and go to state 18
+
+
+State 9
+
+    9 judge: T_LESS_OR_EQUAL . T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+
+    T_LEFT_BRACKET  shift, and go to state 19
+
+
+State 10
+
+   10 judge: T_EQUAL . T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+
+    T_LEFT_BRACKET  shift, and go to state 20
+
+
+State 11
+
+   11 judge: T_NOT_EQUAL . T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+
+    T_LEFT_BRACKET  shift, and go to state 21
+
+
+State 12
+
+   12 judge: T_GREATER . T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+
+    T_LEFT_BRACKET  shift, and go to state 22
+
+
+State 13
+
+   13 judge: T_GREATER_OR_EQUAL . T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET
+
+    T_LEFT_BRACKET  shift, and go to state 23
+
+
+State 14
+
+    7 hyper: logic .
+
+    $default  reduce using rule 7 (hyper)
+
+
+State 15
+
+    2 logic: T_AND T_LEFT_BRACKET hyper . T_RIGHT_BRACKET
+    4 hyper: hyper . T_COMMA judge
+    5      | hyper . T_COMMA logic
+
+    T_RIGHT_BRACKET  shift, and go to state 24
+    T_COMMA          shift, and go to state 25
+
+
+State 16
+
+    6 hyper: judge .
+
+    $default  reduce using rule 6 (hyper)
+
+
+State 17
+
+    3 logic: T_OR T_LEFT_BRACKET hyper . T_RIGHT_BRACKET
+    4 hyper: hyper . T_COMMA judge
+    5      | hyper . T_COMMA logic
+
+    T_RIGHT_BRACKET  shift, and go to state 26
+    T_COMMA          shift, and go to state 25
+
+
+State 18
+
+    8 judge: T_LESS T_LEFT_BRACKET . func T_COMMA func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 31
+    param  go to state 32
+
+
+State 19
+
+    9 judge: T_LESS_OR_EQUAL T_LEFT_BRACKET . func T_COMMA func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 33
+    param  go to state 32
+
+
+State 20
+
+   10 judge: T_EQUAL T_LEFT_BRACKET . func T_COMMA func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 34
+    param  go to state 32
+
+
+State 21
+
+   11 judge: T_NOT_EQUAL T_LEFT_BRACKET . func T_COMMA func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 35
+    param  go to state 32
+
+
+State 22
+
+   12 judge: T_GREATER T_LEFT_BRACKET . func T_COMMA func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 36
+    param  go to state 32
+
+
+State 23
+
+   13 judge: T_GREATER_OR_EQUAL T_LEFT_BRACKET . func T_COMMA func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 37
+    param  go to state 32
+
+
+State 24
+
+    2 logic: T_AND T_LEFT_BRACKET hyper T_RIGHT_BRACKET .
+
+    $default  reduce using rule 2 (logic)
+
+
+State 25
+
+    4 hyper: hyper T_COMMA . judge
+    5      | hyper T_COMMA . logic
+
+    T_AND               shift, and go to state 1
+    T_OR                shift, and go to state 2
+    T_LESS              shift, and go to state 8
+    T_LESS_OR_EQUAL     shift, and go to state 9
+    T_EQUAL             shift, and go to state 10
+    T_NOT_EQUAL         shift, and go to state 11
+    T_GREATER           shift, and go to state 12
+    T_GREATER_OR_EQUAL  shift, and go to state 13
+
+    logic  go to state 38
+    judge  go to state 39
+
+
+State 26
+
+    3 logic: T_OR T_LEFT_BRACKET hyper T_RIGHT_BRACKET .
+
+    $default  reduce using rule 3 (logic)
+
+
+State 27
+
+   16 param: T_INT .
+
+    $default  reduce using rule 16 (param)
+
+
+State 28
+
+   17 param: T_FLOAT .
+
+    $default  reduce using rule 17 (param)
+
+
+State 29
+
+   18 param: T_PARAMETER .
+
+    $default  reduce using rule 18 (param)
+
+
+State 30
+
+   14 func: T_TO_YEAR . T_LEFT_BRACKET param T_RIGHT_BRACKET
+
+    T_LEFT_BRACKET  shift, and go to state 40
+
+
+State 31
+
+    8 judge: T_LESS T_LEFT_BRACKET func . T_COMMA func T_RIGHT_BRACKET
+
+    T_COMMA  shift, and go to state 41
+
+
+State 32
+
+   15 func: param .
+
+    $default  reduce using rule 15 (func)
+
+
+State 33
+
+    9 judge: T_LESS_OR_EQUAL T_LEFT_BRACKET func . T_COMMA func T_RIGHT_BRACKET
+
+    T_COMMA  shift, and go to state 42
+
+
+State 34
+
+   10 judge: T_EQUAL T_LEFT_BRACKET func . T_COMMA func T_RIGHT_BRACKET
+
+    T_COMMA  shift, and go to state 43
+
+
+State 35
+
+   11 judge: T_NOT_EQUAL T_LEFT_BRACKET func . T_COMMA func T_RIGHT_BRACKET
+
+    T_COMMA  shift, and go to state 44
+
+
+State 36
+
+   12 judge: T_GREATER T_LEFT_BRACKET func . T_COMMA func T_RIGHT_BRACKET
+
+    T_COMMA  shift, and go to state 45
+
+
+State 37
+
+   13 judge: T_GREATER_OR_EQUAL T_LEFT_BRACKET func . T_COMMA func T_RIGHT_BRACKET
+
+    T_COMMA  shift, and go to state 46
+
+
+State 38
+
+    5 hyper: hyper T_COMMA logic .
+
+    $default  reduce using rule 5 (hyper)
+
+
+State 39
+
+    4 hyper: hyper T_COMMA judge .
+
+    $default  reduce using rule 4 (hyper)
+
+
+State 40
+
+   14 func: T_TO_YEAR T_LEFT_BRACKET . param T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+
+    param  go to state 47
+
+
+State 41
+
+    8 judge: T_LESS T_LEFT_BRACKET func T_COMMA . func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 48
+    param  go to state 32
+
+
+State 42
+
+    9 judge: T_LESS_OR_EQUAL T_LEFT_BRACKET func T_COMMA . func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 49
+    param  go to state 32
+
+
+State 43
+
+   10 judge: T_EQUAL T_LEFT_BRACKET func T_COMMA . func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 50
+    param  go to state 32
+
+
+State 44
+
+   11 judge: T_NOT_EQUAL T_LEFT_BRACKET func T_COMMA . func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 51
+    param  go to state 32
+
+
+State 45
+
+   12 judge: T_GREATER T_LEFT_BRACKET func T_COMMA . func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 52
+    param  go to state 32
+
+
+State 46
+
+   13 judge: T_GREATER_OR_EQUAL T_LEFT_BRACKET func T_COMMA . func T_RIGHT_BRACKET
+
+    T_INT        shift, and go to state 27
+    T_FLOAT      shift, and go to state 28
+    T_PARAMETER  shift, and go to state 29
+    T_TO_YEAR    shift, and go to state 30
+
+    func   go to state 53
+    param  go to state 32
+
+
+State 47
+
+   14 func: T_TO_YEAR T_LEFT_BRACKET param . T_RIGHT_BRACKET
+
+    T_RIGHT_BRACKET  shift, and go to state 54
+
+
+State 48
+
+    8 judge: T_LESS T_LEFT_BRACKET func T_COMMA func . T_RIGHT_BRACKET
+
+    T_RIGHT_BRACKET  shift, and go to state 55
+
+
+State 49
+
+    9 judge: T_LESS_OR_EQUAL T_LEFT_BRACKET func T_COMMA func . T_RIGHT_BRACKET
+
+    T_RIGHT_BRACKET  shift, and go to state 56
+
+
+State 50
+
+   10 judge: T_EQUAL T_LEFT_BRACKET func T_COMMA func . T_RIGHT_BRACKET
+
+    T_RIGHT_BRACKET  shift, and go to state 57
+
+
+State 51
+
+   11 judge: T_NOT_EQUAL T_LEFT_BRACKET func T_COMMA func . T_RIGHT_BRACKET
+
+    T_RIGHT_BRACKET  shift, and go to state 58
+
+
+State 52
+
+   12 judge: T_GREATER T_LEFT_BRACKET func T_COMMA func . T_RIGHT_BRACKET
+
+    T_RIGHT_BRACKET  shift, and go to state 59
+
+
+State 53
+
+   13 judge: T_GREATER_OR_EQUAL T_LEFT_BRACKET func T_COMMA func . T_RIGHT_BRACKET
+
+    T_RIGHT_BRACKET  shift, and go to state 60
+
+
+State 54
+
+   14 func: T_TO_YEAR T_LEFT_BRACKET param T_RIGHT_BRACKET .
+
+    $default  reduce using rule 14 (func)
+
+
+State 55
+
+    8 judge: T_LESS T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET .
+
+    $default  reduce using rule 8 (judge)
+
+
+State 56
+
+    9 judge: T_LESS_OR_EQUAL T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET .
+
+    $default  reduce using rule 9 (judge)
+
+
+State 57
+
+   10 judge: T_EQUAL T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET .
+
+    $default  reduce using rule 10 (judge)
+
+
+State 58
+
+   11 judge: T_NOT_EQUAL T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET .
+
+    $default  reduce using rule 11 (judge)
+
+
+State 59
+
+   12 judge: T_GREATER T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET .
+
+    $default  reduce using rule 12 (judge)
+
+
+State 60
+
+   13 judge: T_GREATER_OR_EQUAL T_LEFT_BRACKET func T_COMMA func T_RIGHT_BRACKET .
+
+    $default  reduce using rule 13 (judge)

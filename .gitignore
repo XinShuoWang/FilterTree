@@ -1,12 +1,5 @@
 filter
 
-filter.tab.c
-filter.tab.h
-filter.output
-
-filter.yy.c
-filter.yy.h
-
 core.*
 *.o
 
