@@ -22,6 +22,7 @@ struct Value *new_int_value(int val)
     p->type_ = INT_PARAM;
     // parameter
     p->data_ = alloc(sizeof(int));
+    p->data_size_ = sizeof(int);
     memcpy(p->data_, &val, sizeof(int));
     return p;
 }
@@ -33,6 +34,7 @@ struct Value *new_float_value(float val)
     p->type_ = FLOAT_PARAM;
     // parameter
     p->data_ = alloc(sizeof(float));
+    p->data_size_ = sizeof(float);
     memcpy(p->data_, &val, sizeof(float));
     return p;
 }
@@ -44,6 +46,7 @@ struct Value *new_string_value(char *str, int len)
     p->type_ = STR_PARAM;
     // parameter
     p->data_ = alloc(len);
+    p->data_size_ = len;
     memcpy(p->data_, str, len);
     return p;
 }

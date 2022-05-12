@@ -30,6 +30,7 @@ struct Value
 {
     enum ValueType type_;
     void* data_;
+    int data_size_;
     int child_num_;
     struct Value **child_;
 };
