@@ -3,27 +3,23 @@
 
 #include "parser.h"
 #include "ast.h"
+#include "debug.h"
 
 #include <string>
 #include <memory>
-
-typedef std::shared_ptr<Value> TreeNode;
 
 class FilterTree
 {
 public:
     FilterTree(std::string &str);
-    void Recursive(TreeNode node);
-    TreeNode Parse();
-    bool operator==(FilterTree &tree);
-    bool operator<(FilterTree &tree);
-    bool operator>(FilterTree &tree);
-    bool operator<=(FilterTree &tree);
-    bool operator>=(FilterTree &tree);
+    ~FilterTree();
+    void Recursive();
+    Value* Parse();
+    bool Contain(FilterTree& tree);
 
 private:
     std::string str_;
-    TreeNode root_;
+    Value* root_;
 };
 
 #endif

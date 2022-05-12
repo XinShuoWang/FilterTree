@@ -1,49 +1,151 @@
 #include "FilterTree.h"
 
+#include <cassert>
+
+// treat p and q as node, is p contain q?
+static bool node_contain(Value *p, Value *q, Value *p_father, Value *q_father)
+{
+    if (p->type_ != q->type_)
+    {
+        //printf("node_contain p->type_ != q->type_\n");
+        return false;
+    }
+
+    switch (p->type_)
+    {
+    case NONE:
+    case AND:
+    case OR:
+    case LESS:
+    case LESS_OR_EQUAL:
+    case EQUAL:
+    case NOT_EQUAL:
+    case GREATER:
+    case GREATER_OR_EQUAL:
+    case TO_YEAR:
+        return true;
+    case STR_PARAM:
+    {
+        if (p->data_size_ != q->data_size_)
+            return false;
+        return memcmp(p->data_, q->data_, p->data_size_) == 0;
+    }
+    case INT_PARAM:
+    {
+        //printf("INT_PARAM\n");
+        //printf("p->data: %d, q->data: %d\n", *((int *)p->data_), *((int *)q->data_));
+        if (p_father->type_ != q_father->type_)
+            return false;
+        switch (p_father->type_)
+        {
+        case LESS:
+            return *((int *)p->data_) < *((int *)q->data_);
+        case LESS_OR_EQUAL:
+            return *((int *)p->data_) <= *((int *)q->data_);
+        case EQUAL:
+        case NOT_EQUAL:
+            return *((int *)p->data_) == *((int *)q->data_);
+        case GREATER:
+            return *((int *)p->data_) > *((int *)q->data_);
+        case GREATER_OR_EQUAL:
+            return *((int *)p->data_) >= *((int *)q->data_);
+        default:
+            exit(1);
+        }
+    }
+    case FLOAT_PARAM:
+    {
+        if (p_father->type_ != q_father->type_)
+            return false;
+        switch (p_father->type_)
+        {
+        case LESS:
+            return *((float *)p->data_) < *((float *)q->data_);
+        case LESS_OR_EQUAL:
+            return *((float *)p->data_) <= *((float *)q->data_);
+        case EQUAL:
+        case NOT_EQUAL:
+            return *((float *)p->data_) == *((float *)q->data_);
+        case GREATER:
+            return *((float *)p->data_) > *((float *)q->data_);
+        case GREATER_OR_EQUAL:
+            return *((float *)p->data_) >= *((float *)q->data_);
+        default:
+            exit(1);
+        }
+    }
+    default:
+        exit(1);
+    }
+}
+
+// p > q (from data structure)
+// treat p and q as tree, is p contain q from data structure?
+static bool contain(Value *p, Value *q, Value *p_father, Value *q_father)
+{
+    if (p == nullptr && q == nullptr)
+    {
+        return true;
+    }
+    else if (p == nullptr && q != nullptr)
+    {
+        return false;
+    }
+    else if (p != nullptr && q == nullptr)
+    {
+        return true;
+    }
+    else if (p != nullptr && q != nullptr)
+    {
+        if (!node_contain(p, q, p_father, q_father))
+            return false;
+        for (int i = 0; i < q->child_num_; ++i)
+        {
+            bool exist = false;
+            for (int j = 0; j < p->child_num_; ++j)
+            {
+                if (contain(p->child_[j], q->child_[i], p, q))
+                {
+                    exist = true;
+                    break;
+                }
+            }
+            if (!exist)
+                return false;
+        }
+        return true;
+    }
+    return false;
+}
+
 FilterTree::FilterTree(std::string &str)
 {
     str_ = str;
-    root_ = nullptr;
+    root_ = parse(const_cast<char *>(str_.c_str()), str_.length());
 }
 
-void FilterTree::Recursive(TreeNode node)
+FilterTree::~FilterTree()
 {
-    dfs(node.get(), 1);
+    delete_value(root_);
 }
 
-TreeNode FilterTree::Parse()
+void FilterTree::Recursive()
 {
-    if (root_ == nullptr)
-    {
-        Value *p = parse(const_cast<char *>(str_.c_str()), str_.length());
-        root_ = std::shared_ptr<Value>(p, [](Value *v)
-                                       { delete_value(v); });
-    }
+    dfs(root_, 1);
+}
+
+Value *FilterTree::Parse()
+{
     return root_;
 }
 
-bool FilterTree::operator==(FilterTree &tree)
+// 返回的结果代表：两棵树所代表的的结果集是否有包含关系
+// this的结果集是否包含tree所代表的的结果集
+bool FilterTree::Contain(FilterTree &tree)
 {
-    return str_.length() == tree.str_.length() && (memcmp(str_.c_str(), tree.str_.c_str(), str_.length()) == 0);
-}
-
-bool FilterTree::operator<(FilterTree &tree)
-{
-    auto x = this->Parse(), y = tree.Parse();
-    
-}
-
-bool FilterTree::operator>(FilterTree &tree)
-{
-    return true;
-}
-
-bool FilterTree::operator<=(FilterTree &tree)
-{
-    return *this == tree || *this < tree;
-}
-
-bool FilterTree::operator>=(FilterTree &tree)
-{
-    return *this == tree || *this > tree;
+    if (str_.length() == tree.str_.length() && memcmp(str_.c_str(), tree.str_.c_str(), str_.length()) == 0)
+        return true;
+    Value *x = Parse();
+    Value *y = tree.Parse();
+    return contain(y, x, nullptr, nullptr);
 }
