@@ -3,7 +3,7 @@
 
 #include "ast.h"
 
-extern "C" void dfs(struct Value *v, int level);
-extern "C" struct Value *parse(char *str, int len);
+void dfs(struct Value *v, int level);
+struct Value *parse(char *str, int len);
 
 #endif
