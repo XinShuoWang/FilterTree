@@ -39,14 +39,12 @@ static bool node_contain(Value *p, Value *q, Value *p_father, Value *q_father)
         switch (p_father->type_)
         {
         case LESS:
-            return *((int *)p->data_) < *((int *)q->data_);
         case LESS_OR_EQUAL:
             return *((int *)p->data_) <= *((int *)q->data_);
         case EQUAL:
         case NOT_EQUAL:
             return *((int *)p->data_) == *((int *)q->data_);
         case GREATER:
-            return *((int *)p->data_) > *((int *)q->data_);
         case GREATER_OR_EQUAL:
             return *((int *)p->data_) >= *((int *)q->data_);
         default:
@@ -60,14 +58,12 @@ static bool node_contain(Value *p, Value *q, Value *p_father, Value *q_father)
         switch (p_father->type_)
         {
         case LESS:
-            return *((float *)p->data_) < *((float *)q->data_);
         case LESS_OR_EQUAL:
             return *((float *)p->data_) <= *((float *)q->data_);
         case EQUAL:
         case NOT_EQUAL:
             return *((float *)p->data_) == *((float *)q->data_);
         case GREATER:
-            return *((float *)p->data_) > *((float *)q->data_);
         case GREATER_OR_EQUAL:
             return *((float *)p->data_) >= *((float *)q->data_);
         default:
