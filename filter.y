@@ -23,7 +23,7 @@ void yyerror(const char* s) {
 %token T_LEFT_BRACKET T_RIGHT_BRACKET T_COMMA T_COLON
 %token T_AND T_OR
 %token T_LESS T_LESS_OR_EQUAL T_EQUAL T_NOT_EQUAL T_GREATER T_GREATER_OR_EQUAL
-%token T_TO_YEAR
+%token T_TO_YEAR T_LENGTH
 
 
 %type<val> filter hyper logic judge func param
@@ -150,6 +150,13 @@ func : T_TO_YEAR T_LEFT_BRACKET param T_RIGHT_BRACKET
             append_child(p, $3);
             $$ = p;
             INFO("toyear \n");
+      }
+      | T_LENGTH T_LEFT_BRACKET param T_RIGHT_BRACKET
+      {
+            struct Value* p = new_value(LENGTH);
+            append_child(p, $3);
+            $$ = p;
+            INFO("length \n"); 
       }
       | param
       {

@@ -20,6 +20,7 @@ enum ValueType
     GREATER_OR_EQUAL,
     /*function*/
     TO_YEAR,
+    LENGTH,
     /*parameter*/
     STR_PARAM,
     INT_PARAM,

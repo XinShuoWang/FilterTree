@@ -64,7 +64,8 @@ extern int yydebug;
     T_NOT_EQUAL = 270,
     T_GREATER = 271,
     T_GREATER_OR_EQUAL = 272,
-    T_TO_YEAR = 273
+    T_TO_YEAR = 273,
+    T_LENGTH = 274
   };
 #endif
 
@@ -79,7 +80,7 @@ union YYSTYPE
       char* sval;
       struct Value* val;
 
-#line 83 "filter.tab.h"
+#line 84 "filter.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
