@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#define DEBUG
-
 #ifdef DEBUG
     #define INFO(...) printf(__VA_ARGS__)
 #else

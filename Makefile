@@ -7,7 +7,7 @@ filter.tab.c filter.tab.h filter.yy.c : filter.l filter.y
 	flex -o filter.yy.c --header-file=filter.yy.h filter.l
 
 filter: main.cc filter.tab.c filter.yy.c ast.c parser.c FilterTree.cc
-	$(CC) -g -std=c++11 -o filter $^
+	$(CC) -g -std=c++11 -O2 -o filter $^ -lhiredis
 
 clean:
 	rm filter *.o core.* filter.output filter.tab.c filter.tab.h filter.yy.c filter.yy.h
